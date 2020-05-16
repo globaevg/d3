@@ -9,9 +9,10 @@ import {
   max,
   axisRight,
   scaleOrdinal,
-  schemeSet2,
+  schemeSet1,
   line,
   curveCardinal,
+  entries,
 } from 'd3';
 
 const data = [
@@ -44,7 +45,7 @@ const data = [
     location: 'city4',
     surname: 'fdas4',
     data: 18,
-    data2: 23,
+    data2: 130,
     data3: 75,
   },
   {
@@ -60,7 +61,7 @@ const data = [
     location: 'city6',
     surname: 'fdas6',
     data: 28,
-    data2: 92,
+    data2: 20,
     data3: 85,
   },
   {
@@ -113,8 +114,6 @@ export const LineChart = () => {
   const dimensions = useResizeObserver(wrapperRef);
   // will be called each time if size changes
   useEffect(() => {
-    console.log('dimensions', dimensions);
-    console.log(svgRef);
     const svg = select(svgRef.current);
 
     if (!dimensions) return;
@@ -125,47 +124,52 @@ export const LineChart = () => {
     // scale X
     const xScale = scalePoint()
       .domain(data.map((dat) => dat.name))
-      .range([0, dimensions.width])
-      .padding(0.5); // change
-
+      .range([0, dimensions.width]); // change
     // create x-axis
     const xAxis = axisBottom(xScale).ticks(data.length);
-    svg.append('g').call(xAxis);
+    svg
+      .append('g')
+      .style('transform', `translateY(${dimensions.height}px)`)
+      .call(xAxis);
 
-    console.log(min(values));
-    console.log(max(values));
-
+    const minValueY = min(values);
+    const maxValueY = max(values);
+    const maxMinDif = maxValueY - minValueY;
+    const minValue =
+      minValueY > 0 && minValueY - maxMinDif * 0.1 < 0
+        ? 0
+        : minValueY - maxMinDif * 0.1;
+    const maxValue = maxValueY + maxMinDif * 0.1;
     // scale Y
     const yScale = scaleLinear()
-      .domain([0, 150]) // todo
+      .domain([minValue, maxValue]) // todo
       .range([dimensions.height, 0]); // change
 
     // create y-axis
     const yAxis = axisRight(yScale);
-    svg.select('.y-axis').call(yAxis);
+    svg
+      .append('g')
+      .style('transform', `translateX(${dimensions.width}px)`)
+      .call(yAxis);
 
-    const colorScale = scaleOrdinal(schemeSet2);
+    const colorScale = scaleOrdinal(schemeSet1);
 
     const myLine = line()
       .x((value) => xScale(value[0]))
       .y((value) => dimensions.height - yScale(value[1]))
       .curve(curveCardinal);
 
+    const lineData = subgroups.map((key) =>
+      data.map((arr) => [arr.name, arr[key]])
+    );
+    // console.log(lineData);
+
     svg
-      .selectAll('path')
-      .data(data)
-      .join('path')
-      .attr(
-        'd',
-        subgroups.map((key) =>
-          myLine(
-            data.map((arr) => {
-              console.log([arr.name, arr[key]]);
-              return [arr.name, arr[key]];
-            })
-          )
-        )
-      )
+      .selectAll('path.line')
+      .data(lineData)
+      .enter()
+      .append('path')
+      .attr('d', (d) => myLine(d))
       .attr('stroke', colorScale)
       .attr('fill', 'none');
 
@@ -176,10 +180,13 @@ export const LineChart = () => {
     <div>
       <h2>I'm barChart component</h2>
       <div
-        style={{ margin: '40px', height: '100%', minHeight: '200px' }}
+        style={{ margin: '40px', height: '100%', minHeight: '600px' }}
         ref={wrapperRef}
       >
-        <svg style={{ width: '100%', overflow: 'visible' }} ref={svgRef}></svg>
+        <svg
+          style={{ width: '100%', overflow: 'visible', height: '500px' }}
+          ref={svgRef}
+        ></svg>
       </div>
       <hr color='red' />
     </div>
