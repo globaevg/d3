@@ -112,9 +112,12 @@ export const LineChart = () => {
   const wrapperRef = useRef();
   const svgRef = useRef();
   const dimensions = useResizeObserver(wrapperRef);
+  const svgLegend = useRef();
+
   // will be called each time if size changes
   useEffect(() => {
     const svg = select(svgRef.current);
+    const svgLeg = select(svgLegend.current);
 
     if (!dimensions) return;
 
@@ -173,20 +176,68 @@ export const LineChart = () => {
       .attr('stroke', colorScale)
       .attr('fill', 'none');
 
+    svgLeg
+      .append('circle')
+      .attr('cx', 50)
+      .attr('cy', 130)
+      .attr('r', 6)
+      .style('fill', '#69b3a2');
+    svgLeg
+      .append('circle')
+      .attr('cx', 50)
+      .attr('cy', 160)
+      .attr('r', 6)
+      .style('fill', '#404080');
+    svgLeg
+      .append('text')
+      .attr('x', 50)
+      .attr('y', 130)
+      .text('variable A')
+      .style('font-size', '15px')
+      .attr('alignment-baseline', 'middle');
+    svgLeg
+      .append('text')
+      .attr('x', 50)
+      .attr('y', 160)
+      .text('variable B')
+      .style('font-size', '15px')
+      .attr('alignment-baseline', 'middle');
+
     // //
   }, [data, dimensions]);
 
   return (
     <div>
       <h2>I'm barChart component</h2>
-      <div
-        style={{ margin: '40px', height: '100%', minHeight: '600px' }}
-        ref={wrapperRef}
-      >
-        <svg
-          style={{ width: '100%', overflow: 'visible', height: '500px' }}
-          ref={svgRef}
-        ></svg>
+      <div style={{ display: 'flex' }}>
+        <div
+          style={{
+            margin: '40px',
+            height: '100%',
+            minHeight: '400px',
+            flexGrow: '1',
+            textAlign: 'left',
+          }}
+          ref={wrapperRef}
+        >
+          <svg
+            style={{ overflow: 'visible', height: '400px' }}
+            ref={svgRef}
+          ></svg>
+        </div>
+        <div
+          className='line-chart-legend'
+          style={{
+            minWidth: '150px',
+            height: '400px',
+            border: '1px solid green',
+          }}
+        >
+          <svg
+            ref={svgLegend}
+            style={{ overflow: 'visible', height: '400px' }}
+          ></svg>
+        </div>
       </div>
       <hr color='red' />
     </div>
