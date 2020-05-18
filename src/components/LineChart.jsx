@@ -16,6 +16,8 @@ import {
   curveCardinal,
 } from 'd3';
 
+import './chartsStyle.scss';
+
 const data = [
   {
     name: 'asdf',
@@ -115,15 +117,14 @@ export const LineChart = () => {
   const dimensions = useResizeObserver(wrapperRef);
   const svgLegend = useRef();
 
+  const [legendHeight, setLegendHeight] = useState(null);
+
   // will be called each time if size changes
   useEffect(() => {
     const svg = select(svgRef.current);
     const svgLeg = select(svgLegend.current);
 
     if (!dimensions) return;
-
-    // all changes put below
-    console.log('width', dimensions.width);
 
     // scale X
     const xScale = scalePoint()
@@ -156,7 +157,6 @@ export const LineChart = () => {
       .style('transform', `translateX(${dimensions.width}px)`)
       .call(yAxis);
 
-    const colorScale = scaleOrdinal(schemeSet1);
     const schemeSet = [...schemeSet1, ...schemeSet2, ...schemeSet3];
 
     const myLine = line()
@@ -177,6 +177,8 @@ export const LineChart = () => {
       .attr('d', (d) => myLine(d))
       .attr('stroke', (d, i) => schemeSet[i])
       .attr('stroke-width', 2)
+      .transition()
+      .attr('d', (d) => myLine(d))
       .attr('fill', 'none');
 
     svg
@@ -193,15 +195,21 @@ export const LineChart = () => {
       .attr('cy', (d) => dimensions.height - yScale(d[1]))
       .attr('r', 3);
 
+    // set scroll if height legend more than container's hight
+    if (subgroups.length * 25 > dimensions.height) {
+      console.log(subgroups.length);
+      setLegendHeight(subgroups.length * 25 + 25);
+    }
+
     // Add one dot in the legend for each name.
     svgLeg
       .selectAll('legendsDots')
       .data(subgroups)
       .enter()
       .append('circle')
-      .attr('cx', 60)
+      .attr('cx', 40)
       .attr('cy', (d, i) => {
-        return 100 + i * 25;
+        return 25 + i * 25;
       }) // 100 is where the first dot appears. 25 is the distance between dots
       .attr('r', 7)
       .style('fill', (d, i) => schemeSet[i]);
@@ -211,8 +219,8 @@ export const LineChart = () => {
       .data(subgroups)
       .enter()
       .append('text')
-      .attr('x', 80)
-      .attr('y', (d, i) => 100 + i * 25) // 100 is where the first dot appears. 25 is the distance between dots
+      .attr('x', 60)
+      .attr('y', (d, i) => 25 + i * 25) // 100 is where the first dot appears. 25 is the distance between dots
       .style('fill', (d, i) => schemeSet[i])
       .text((d) => d)
       .style('alignment-baseline', 'middle');
@@ -223,7 +231,7 @@ export const LineChart = () => {
   return (
     <div>
       <h2>I'm barChart component</h2>
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex', alignItems: 'stretch' }}>
         <div
           style={{
             margin: '40px',
@@ -240,16 +248,23 @@ export const LineChart = () => {
           ></svg>
         </div>
         <div
-          className='line-chart-legend'
+          className='chart-legend'
           style={{
             minWidth: '200px',
-            height: '400px',
-            border: '1px solid green',
+            overflow: 'auto',
+            padding: '20px 0',
+            boxSizing: 'border-box',
+            maxHeight: '450px',
+            display: 'flex',
+            flexDirection: 'column',
           }}
         >
           <svg
             ref={svgLegend}
-            style={{ overflow: 'visible', height: '400px', width: '200px' }}
+            style={{
+              minHeight: legendHeight ? `${legendHeight}px` : 'auto',
+              width: '200px',
+            }}
           ></svg>
         </div>
       </div>
