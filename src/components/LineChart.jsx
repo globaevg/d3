@@ -8,7 +8,6 @@ import {
   min,
   max,
   axisRight,
-  scaleOrdinal,
   schemeSet1,
   schemeSet2,
   schemeSet3,
@@ -176,8 +175,8 @@ export const LineChart = () => {
       .append('path')
       .attr('d', (d) => myLine(d))
       .attr('stroke', (d, i) => schemeSet[i])
-      .attr('stroke-width', 2)
       .transition()
+      .attr('stroke-width', 2)
       .attr('d', (d) => myLine(d))
       .attr('fill', 'none');
 
@@ -188,7 +187,7 @@ export const LineChart = () => {
       .append('g')
       .style('fill', (d, i) => schemeSet[i])
       .selectAll('myPoints')
-      .data((d) => d)
+      .data([(d) => d])
       .enter()
       .append('circle')
       .attr('cx', (d) => xScale(d[0]))
@@ -196,8 +195,8 @@ export const LineChart = () => {
       .attr('r', 3);
 
     // set scroll if height legend more than container's hight
-    if (subgroups.length * 25 > dimensions.height) {
-      console.log(subgroups.length);
+    if (subgroups.length * 25 > 150) {
+      // console.log(subgroups.length);
       setLegendHeight(subgroups.length * 25 + 25);
     }
 
