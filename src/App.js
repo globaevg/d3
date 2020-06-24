@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import mount from './image/mount.jpg';
 
 import './App.css';
 
@@ -13,8 +12,8 @@ function App() {
   useEffect(() => {
     setTimeout(() => {
       createPng();
-    }, 1500);
-  }, []);
+    }, 500);
+  });
 
   const createPng = () => {
     let svgNode = document.querySelector('svg');
@@ -51,11 +50,9 @@ function App() {
         style={{ display: 'none' }}
       ></canvas>
 
-      {/* {urlSrc && ( */}
       <a href={urlSrc} download>
-        Click to download
+        <button className='download-button'>Click to download</button>
       </a>
-      {/* )} */}
     </div>
   );
 }
