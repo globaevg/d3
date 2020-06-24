@@ -131,10 +131,9 @@ export const LineChart = () => {
       .range([0, dimensions.width]); // change
     // create x-axis
     const xAxis = axisBottom(xScale).ticks(data.length);
-    svg
-      .append('g')
-      .style('transform', `translateY(${dimensions.height}px)`)
-      .call(xAxis);
+    svg.append('g').call(xAxis);
+
+    svg.style('transform', `translateY(${dimensions.height}px)`);
 
     const minValueY = min(values);
     const maxValueY = max(values);
@@ -151,10 +150,9 @@ export const LineChart = () => {
 
     // create y-axis
     const yAxis = axisRight(yScale);
-    svg
-      .append('g')
-      .style('transform', `translateX(${dimensions.width}px)`)
-      .call(yAxis);
+    svg.append('g').call(yAxis);
+
+    svg.style('transform', `translateX(${dimensions.width}px)`);
 
     const schemeSet = [...schemeSet1, ...schemeSet2, ...schemeSet3];
 

@@ -3,82 +3,82 @@
     "rows": [
       {
         "name": "asdf",
-        "location": "city",
-        "surname": "fdas",
         "data": 123,
+        "location": "city",
         "data2": 32,
+        "surname": "fdas",
         "data3": 55
       },
       {
         "name": "asdf2",
-        "location": "city2",
-        "surname": "fdas2",
         "data": 111,
+        "location": "city2",
         "data2": 65,
+        "surname": "fdas2",
         "data3": 77
       },
       {
         "name": "asdf3",
-        "location": "city3",
-        "surname": "fdas3",
         "data": 87,
+        "location": "city3",
         "data2": 87,
+        "surname": "fdas3",
         "data3": 35
       },
       {
         "name": "asdf4",
-        "location": "city4",
-        "surname": "fdas4",
         "data": 18,
+        "location": "city4",
         "data2": 23,
+        "surname": "fdas4",
         "data3": 75
       },
       {
         "name": "asdf5",
-        "location": "city5",
-        "surname": "fdas5",
         "data": 98,
+        "location": "city5",
         "data2": 67,
+        "surname": "fdas5",
         "data3": 88
       },
       {
         "name": "asdf6",
-        "location": "city6",
-        "surname": "fdas6",
         "data": 28,
+        "location": "city6",
         "data2": 92,
+        "surname": "fdas6",
         "data3": 85
       },
       {
         "name": "asdf7",
-        "location": "city7",
-        "surname": "fdas7",
         "data": 89,
+        "location": "city7",
         "data2": 45,
+        "surname": "fdas7",
         "data3": 35
       },
       {
         "name": "asdf8",
-        "location": "city8",
-        "surname": "fdas8",
         "data": 135,
+        "location": "city8",
         "data2": 132,
+        "surname": "fdas8",
         "data3": 98
       },
       {
         "name": "asdf9",
-        "location": "city9",
-        "surname": "fdas9",
         "data": 87,
+        "location": "city9",
         "data2": 94,
+        "surname": "fdas9",
         "data3": 76
       },
       {
         "name": "asdf10",
-        "location": "city10",
-        "surname": "fdas10",
         "data": 59,
+        "location": "city10",
         "data2": 86,
+        "surname": "fdas10",
         "data3": 9
       }
     ]

@@ -164,7 +164,6 @@ export const BarChart = () => {
       .data(data)
       .enter()
       .append('g')
-      .attr('transform', (d) => `translate(${xScale(d.name)},0)`)
       .selectAll('rect')
       .data((d) =>
         subgroups.map((key) => ({ key, value: d[key], name: d.name }))
@@ -195,6 +194,10 @@ export const BarChart = () => {
       .on('mouseleave', () => svg.select('.tooltip').remove())
       .attr('height', (d) => dimensions.height - yScale(d.value))
       .attr('fill', (d) => color(d.key));
+
+    svg
+      .selectAll('rect')
+      .attr('transform', (d) => `translate(${xScale(d.name)},0)`);
 
     // set scroll if height legend more than container's hight
     if (subgroups.length * 25 > 150) {
