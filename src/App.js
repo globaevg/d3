@@ -12,7 +12,7 @@ function App() {
   useEffect(() => {
     setTimeout(() => {
       createPng();
-    }, 500);
+    }, 1000);
   });
 
   const createPng = () => {
@@ -20,8 +20,17 @@ function App() {
     if (svgNode) {
       let svgString = new XMLSerializer().serializeToString(svgNode);
       console.log(svgString);
+      console.log('svgNode props: ', svgNode);
+      let nodeWidth = svgNode.getAttribute('width');
+      let nodeHeight = svgNode.getAttribute('height');
+      console.log(nodeWidth);
+      console.log(nodeHeight);
 
-      let canvas = document.getElementById('canvas');
+      // let canvas = document.getElementById('canvas');
+      let canvas = document.createElement('canvas');
+      canvas.setAttribute('width', nodeWidth);
+      canvas.setAttribute('height', nodeHeight);
+
       let ctx = canvas.getContext('2d');
       let DOMURL = window.self.URL || window.self.webkitURL || window.self;
       let img = new Image();
@@ -29,7 +38,7 @@ function App() {
         type: 'image/svg+xml;charset=utf-8',
       });
       let url = DOMURL.createObjectURL(svg);
-      img.onload = function () {
+      img.onload = () => {
         ctx.drawImage(img, 0, 0);
         let png = canvas.toDataURL('image/png');
         loadedIMG = png;
@@ -41,18 +50,10 @@ function App() {
 
   return (
     <div className='App'>
-      <GoogleChart />
-
-      <canvas
-        id='canvas'
-        width='800'
-        height='400'
-        style={{ display: 'none' }}
-      ></canvas>
-
       <a href={urlSrc} download>
         <button className='download-button'>Click to download</button>
       </a>
+      <GoogleChart />
     </div>
   );
 }
